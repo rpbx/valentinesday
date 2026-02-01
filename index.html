@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #ff9ec7 0%, #ff6b9d 50%, #ff4d7a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 30px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .teddy-bear {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            animation: bounce 2s infinite;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .teddy-bear svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 40px;
+            color: #ff1744;
+            animation: heartbeat 1.5s infinite;
+            top: 10px;
+            right: 20px;
+            z-index: 2;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        h1 {
+            color: #ff1744;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            margin-top: 30px;
+            position: relative;
+            min-height: 100px;
+            width: 100%;
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            border: none;
+            padding: clamp(12px, 3.5vw, 20px) clamp(26px, 8.5vw, 60px);
+            font-size: clamp(1.2rem, 5.5vw, 2rem);
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            position: relative;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .yes-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.6);
+        }
+
+        .yes-btn:active {
+            transform: scale(0.95);
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(244, 67, 54, 0.3);
+            transition: all 0.1s ease;
+            font-weight: bold;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            position: relative; /* starts side-by-side; JS switches to fixed when it starts running */
+            z-index: 5;
+            touch-action: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .no-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .message {
+            margin-top: 30px;
+            font-size: 1.5em;
+            color: #ff1744;
+            font-weight: bold;
+            min-height: 50px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .gif-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            place-items: center;
+            padding: 18px;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 50;
+        }
+
+        .gif-overlay.show {
+            display: grid;
+            animation: fadeIn 0.35s ease-in;
+        }
+
+        .gif-card {
+            width: min(520px, 92vw);
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 22px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.35);
+            padding: 16px;
+        }
+
+        .gif-card img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 16px;
+        }
+
+        .gif-caption {
+            margin-top: 10px;
+            font-size: 1.15em;
+            color: #ff1744;
+            font-weight: bold;
+        }
+
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 23, 68, 0.6);
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .teddy-bear {
+                width: 150px;
+                height: 150px;
+            }
+
+            .heart {
+                font-size: 30px;
+                top: 5px;
+                right: 10px;
+            }
+
+            .no-btn {
+                padding: 8px 20px;
+                font-size: 0.9em;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    <div class="gif-overlay" id="gifOverlay" aria-hidden="true">
+        <div class="gif-card" role="dialog" aria-label="Valentine celebration">
+            <img
+                id="yesGif"
+                alt="Happy celebration GIF"
+                src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2s4cWJlNDJ6eW90NTQyYWlvajdxMHZ4bWc0dWpvN3BvbDJ2eHdhayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/t3sZxY5zS5B0z5zMIz/giphy.gif"
+                decoding="async"
+            />
+            <div class="gif-caption">Yay!!! 💖</div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="teddy-bear">
+            <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <ellipse cx="100" cy="80" rx="60" ry="55" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                <!-- Ears -->
+                <ellipse cx="60" cy="50" rx="25" ry="30" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                <ellipse cx="140" cy="50" rx="25" ry="30" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                <ellipse cx="60" cy="50" rx="15" ry="20" fill="#A0522D"/>
+                <ellipse cx="140" cy="50" rx="15" ry="20" fill="#A0522D"/>
+                <!-- Face -->
+                <ellipse cx="85" cy="75" rx="8" ry="10" fill="#000"/>
+                <ellipse cx="115" cy="75" rx="8" ry="10" fill="#000"/>
+                <ellipse cx="100" cy="95" rx="15" ry="12" fill="#000"/>
+                <ellipse cx="100" cy="95" rx="8" ry="6" fill="#fff"/>
+                <!-- Nose -->
+                <ellipse cx="100" cy="88" rx="5" ry="4" fill="#000"/>
+                <!-- Body -->
+                <ellipse cx="100" cy="160" rx="50" ry="60" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                <!-- Belly -->
+                <ellipse cx="100" cy="160" rx="35" ry="45" fill="#A0522D"/>
+                <!-- Arms -->
+                <ellipse cx="50" cy="140" rx="20" ry="35" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                <ellipse cx="150" cy="140" rx="20" ry="35" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                <!-- Legs -->
+                <ellipse cx="80" cy="200" rx="18" ry="25" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+                <ellipse cx="120" cy="200" rx="18" ry="25" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+            </svg>
+            <span class="heart">❤️</span>
+        </div>
+        <h1>Will you be my Valentine? 💕</h1>
+        <div class="buttons-container" id="buttonsContainer">
+            <button class="yes-btn" id="yesBtn">Yes! 💖</button>
+            <button class="no-btn" id="noBtn">No</button>
+        </div>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const message = document.getElementById('message');
+        const buttonsContainer = document.getElementById('buttonsContainer');
+        const hearts = document.getElementById('hearts');
+        const gifOverlay = document.getElementById('gifOverlay');
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-float';
+            heart.textContent = '💕';
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            hearts.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 20000);
+        }
+
+        // Create hearts periodically
+        setInterval(createHeart, 500);
+
+        const isTouchDevice =
+            (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ||
+            (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+
+        let noRunInterval = null;
+        let lastPointer = { x: null, y: null, t: 0 };
+
+        function clamp(n, min, max) {
+            return Math.max(min, Math.min(max, n));
+        }
+
+        function moveNoTo(leftPx, topPx) {
+            const b = noBtn.getBoundingClientRect();
+            const pad = 12;
+            const maxLeft = Math.max(pad, window.innerWidth - b.width - pad);
+            const maxTop = Math.max(pad, window.innerHeight - b.height - pad);
+
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = clamp(leftPx, pad, maxLeft) + 'px';
+            noBtn.style.top = clamp(topPx, pad, maxTop) + 'px';
+        }
+
+        function moveNoRandom() {
+            const b = noBtn.getBoundingClientRect();
+            const pad = 12;
+            const maxLeft = Math.max(pad, window.innerWidth - b.width - pad);
+            const maxTop = Math.max(pad, window.innerHeight - b.height - pad);
+            const left = pad + Math.random() * (maxLeft - pad);
+            const top = pad + Math.random() * (maxTop - pad);
+            moveNoTo(left, top);
+        }
+
+        function moveNoAwayFrom(px, py) {
+            const b = noBtn.getBoundingClientRect();
+            const cx = b.left + b.width / 2;
+            const cy = b.top + b.height / 2;
+            let dx = cx - px;
+            let dy = cy - py;
+            const len = Math.hypot(dx, dy) || 1;
+            dx /= len;
+            dy /= len;
+
+            const step = isTouchDevice ? 220 : 140;
+            const targetLeft = cx + dx * step - b.width / 2;
+            const targetTop = cy + dy * step - b.height / 2;
+            moveNoTo(targetLeft, targetTop);
+        }
+
+        function tickNoRun() {
+            const recent = Date.now() - lastPointer.t < 450;
+            if (recent && lastPointer.x != null && lastPointer.y != null) {
+                moveNoAwayFrom(lastPointer.x, lastPointer.y);
+            } else {
+                moveNoRandom();
+            }
+        }
+
+        function startNoRun(speedMs) {
+            if (noRunInterval) return;
+
+            // “Break out” from the flex layout at its current screen position
+            const b = noBtn.getBoundingClientRect();
+            moveNoTo(b.left, b.top);
+
+            noRunInterval = setInterval(tickNoRun, speedMs);
+        }
+
+        function stopNoRun() {
+            if (!noRunInterval) return;
+            clearInterval(noRunInterval);
+            noRunInterval = null;
+        }
+
+        // Track finger/mouse position globally so the loop always has fresh coordinates
+        window.addEventListener('pointermove', (e) => {
+            lastPointer = { x: e.clientX, y: e.clientY, t: Date.now() };
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                const t = e.touches[0];
+                lastPointer = { x: t.clientX, y: t.clientY, t: Date.now() };
+            }
+        }, { passive: true });
+
+        // Desktop: jump away when you try to hover/click it
+        noBtn.addEventListener('mouseenter', () => {
+            lastPointer.t = Date.now();
+            moveNoRandom();
+        });
+
+        noBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            moveNoRandom();
+        });
+
+        noBtn.addEventListener('focus', () => {
+            moveNoRandom();
+        });
+
+        // Mobile: it should move continuously (even before you touch it)
+        if (isTouchDevice) {
+            setTimeout(() => startNoRun(120), 650);
+        }
+
+        // If the user tries to touch anywhere near it, crank up the evasion
+        buttonsContainer.addEventListener('touchstart', (e) => {
+            if (e.touches && e.touches.length > 0) {
+                const t = e.touches[0];
+                lastPointer = { x: t.clientX, y: t.clientY, t: Date.now() };
+            }
+            startNoRun(70);
+        }, { passive: false });
+
+        window.addEventListener('touchend', () => {
+            // Keep moving on mobile even after touch; don’t stop.
+            // (If you ever want it to stop, call stopNoRun() here.)
+        }, { passive: true });
+
+        window.addEventListener('resize', () => {
+            // Keep it in-bounds after orientation change / resize
+            if (noBtn.style.position === 'fixed') {
+                const b = noBtn.getBoundingClientRect();
+                moveNoTo(b.left, b.top);
+            }
+        }, { passive: true });
+
+        // Yes button handler
+        yesBtn.addEventListener('click', () => {
+            message.textContent = 'Yay! You made me the happiest! 💖💕💖';
+            message.style.animation = 'fadeIn 0.5s ease-in';
+            yesBtn.style.transform = 'scale(1.2)';
+            yesBtn.style.background = 'linear-gradient(135deg, #81c784, #66bb6a)';
+            
+            // Hide the no button
+            noBtn.style.display = 'none';
+            stopNoRun();
+
+            // Show the celebration GIF
+            gifOverlay.classList.add('show');
+            gifOverlay.setAttribute('aria-hidden', 'false');
+            
+            // Create celebration hearts
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    createHeart();
+                }, i * 100);
+            }
+        });
+
+        // Tap anywhere outside the card to close the overlay (optional)
+        gifOverlay.addEventListener('click', (e) => {
+            if (e.target === gifOverlay) {
+                gifOverlay.classList.remove('show');
+                gifOverlay.setAttribute('aria-hidden', 'true');
+            }
+        });
+    </script>
+</body>
+</html>
